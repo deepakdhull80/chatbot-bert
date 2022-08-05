@@ -3,6 +3,7 @@ import argparse
 from model import BERT_Arch
 from config import config
 import json
+import os
 import random
 
 def get_response(data,intent):
@@ -22,6 +23,10 @@ if __name__ == '__main__':
     data = json.load(open(config['src_file_path'],'r'))['intents']
 
     model = BERT_Arch()
+    if not os.path.exists(config['cp_path']):
+        print("cp need to be downloaded")
+        raise FileNotFoundError(config['cp_path'])
+
     cp = torch.load(config['cp_path'])
     state_dict = cp['param']
     model_stat = model.state_dict()
